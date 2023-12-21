@@ -2,15 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: 'email', message: "Cet email est déjà utilisé.")]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -20,6 +23,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: "Veuillez renseigner une adresse mail.")]
+    #[Assert\Email(message: "Veuillez renseigner une adresse mail valide.")]
+    
     private ?string $email = null;
 
     #[ORM\Column]
@@ -29,15 +35,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9!@#$%^&*(),.?:{}|]*$/',
+        message: 'Le champ peut contenir des lettres majuscules, minuscules, chiffres et certains symboles.'
+    )] 
+    #[Assert\NotBlank(message: "Veuillez renseigner un mot de passe.")]
+    #[Assert\Length(min: 5, minMessage:" Le mot de passe doit faire plus de 5 caracteres.")]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Veuillez renseigner votre Prénom.")]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Veuillez renseigner votre Nom.")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Veuillez renseigner votre telephone.")]
     private ?string $telephone = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -51,6 +66,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Blogpost::class, orphanRemoval: true)]
     private Collection $blogposts;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $picture = null;
 
     public function __construct()
     {
@@ -244,6 +262,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $blogpost->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }

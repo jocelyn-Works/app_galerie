@@ -1,0 +1,27 @@
+
+
+$primary:#2b3da1;
+$secodary:#b9de6e;
+$white:white;
+$footer: rgba(255, 166, 0);
+$border-radius:15px;
+$box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+
+
+
+
+
+body{
+    width: 100%;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+}
