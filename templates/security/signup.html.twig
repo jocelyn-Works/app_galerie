@@ -3,9 +3,11 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
+<div class="title-form">
+  <h1>Inscription</h1>
+</div>
 <div class="content-form">
-    <div class="form">
-        <h2>Inscription</h2>
+    <form class="form-signup">
         {{ form_start(form) }}
         {{ form_rest(form) }}
         <div class="row-signup">
@@ -13,9 +15,9 @@
           <a href="{{ path('login') }}">Se connecter</a>
         </div>
         {{ form_end(form) }}
-    </div>
+    </form>
     <div class="image-form">
-        
+        <img src="{{asset ('build/images/monkey.jpg')}}" alt="">
     </div>
 </div>
 {% endblock %}

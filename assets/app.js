@@ -8,5 +8,6 @@
 import './scss/app.scss'
 import './navbar'
 import './slider'
+import './footer'
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉')
