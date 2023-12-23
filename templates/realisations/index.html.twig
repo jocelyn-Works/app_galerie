@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RéalisationsController!{% endblock %}
+
+{% block body %}
+
+
+{% for galerie in galeries%}
+<div id="container">
+    <div class="product-details">
+    
+        <h1>{{galerie.nom}}</h1>
+          
+        <p class="information">{{galerie.description|u.truncate(150, '...', false)}}</p>
+      
+      <div class="control">
+        
+        <button class="btn">
+         <span class="price">{{ galerie.prix}} €</span>
+         
+         {# <span class="buy">{% if galerie.envente == 1 %}
+            en vente
+          {% elseif galerie.envente == 2 %}
+            pas en vente
+          {% else %}
+            pas en vente
+          {% endif %}</span> #}
+       </button>
+        
+      </div>
+            
+      </div>
+        
+      <div class="product-image">
+        
+        <img src="{{galerie.file}}" alt="">
+        
+      
+      <div class="info">
+        <h2> Description</h2>
+        <ul>
+          <li>Largeur : <strong>{{ galerie.largeur }} </strong></li>
+          <li>Hauteur : <strong>{{ galerie.hauteur }} </strong></li>
+          {# <li><strong>{{ galerie. }} </strong></li> #}
+          <li>En vente : <strong>{% if galerie.envente == 1 %}
+            Oui
+          {% elseif galerie.envente == 2 %}
+            Non
+          {% else %}
+            Non
+          {% endif %}</strong></li>
+          
+        </ul>
+      </div>
+      </div>
+      
+      </div>
+</div>
+{% endfor %}
+<div class="pagination">
+    {% do galeries.setPageRange(2) %}
+    {{ knp_pagination_render(galeries, 'includes/_paginations.html.twig') }}
+</div>
+{% endblock %}

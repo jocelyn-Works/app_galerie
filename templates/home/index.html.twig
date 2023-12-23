@@ -3,24 +3,72 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-<section class="slider-image">
-    <img src="{{asset ('build/images/peinture-slider.jpg')}}" alt="" class="img_slider active">
-    <img src="{{asset ('build/images/peinture-slider2.jpg')}}" alt="" class="img_slider">
-    <img src="{{asset ('build/images/peinture-slider3.jpg')}}" alt="" class="img_slider">
-    <div class="suivant">
-        <svg xmlns="http://www.w3.org/2000/svg" height="40" width="40" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
-    </div>
-    <div class="precedent">
-        <svg xmlns="http://www.w3.org/2000/svg" height="40" width="40" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg>
-    </div>
-</section>
-<section class="container-slider">
-   <div class="slider-text">
-    <h1>Bienvenue à la Galerie d'Art</h1>
-    <p>Connecter vous pour publier vos oeuvre</p>
-    <a href="{{ path('login') }}" class="btn btn-primary">Se connecter</a>
-    
+    <section class="slider-image">
+        <img src="{{asset ('build/images/peinture-slider.jpg')}}" alt="" class="img_slider active">
+        <img src="{{asset ('build/images/peinture-slider2.jpg')}}" alt="" class="img_slider">
+        <img src="{{asset ('build/images/peinture-slider3.jpg')}}" alt="" class="img_slider">
+        <div class="suivant">
+            <svg xmlns="http://www.w3.org/2000/svg" height="40" width="40" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
+        </div>
+        <div class="precedent">
+            <svg xmlns="http://www.w3.org/2000/svg" height="40" width="40" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg>
+        </div>
+    </section>
 
-   </div>
-</section>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeBtn"></span>
+            <section class="container-slider">
+                <div class="slider-text">
+                    <h1>Bienvenue à la Galerie d'Art</h1>
+                    <p>Connecter vous pour publier vos oeuvre</p>
+                    <a href="{{ path('login') }}" class="btn btn-primary">Se connecter</a>
+                </div>
+            </section >
+        </div>
+    </div>
+
+    
+    
+    <div class="title-galerie">
+        <h2>Les derniéres réalisations</h2>
+    </div>
+    <section class="description">
+       <ul class="cards">
+        {% for galerie in galeries %} 
+        <li>
+            <a href="" class="card">
+              <img src="{{galerie.file}}" class="card__image" alt="" />
+              <div class="card__overlay">
+                <div class="card__header">
+                  <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path d="M 40 80 c 22 0 40 -22 40 -40 v 40 Z " /></svg>                     
+                  <img class="card__thumb" src="https://i.imgur.com/7D7I6dI.png" alt="" />
+                  <div class="card__header-text">
+                    <h3 class="card__title">{{galerie.nom}}</h3>            
+                    <span class="card__status">Ajouté le : {{galerie.createdAt|date('d/m/Y') }}</span>
+                  </div>
+                </div>
+                <p class="card__description">{{galerie.description|u.truncate(200, '...', false)}}</p>
+                <p class="card__description">{{galerie.prix}} €</p>
+              </div>
+            </a>      
+          </li>
+          {% endfor %}
+       </ul>
+    </section>
+
+    <section class="blogpost">
+        {% for blogpost in blogposts%}
+        <div class="blog-article">
+            <h3>{{blogpost.titre}}</h3>
+            <div class="content-blog">
+                <p>{{blogpost.contenu|u.truncate(150, '...', false)}}</p>
+            </div>
+            <div class="blog-date">
+                <p>publié le {{blogpost.createdAt|date('d/m/y')}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
 {% endblock %}

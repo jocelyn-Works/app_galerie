@@ -38,4 +38,4 @@ setInterval(function() {
     }
     enleverActiveImages();
     img_slider[etape].classList.add('active');
-},10000)
+},5000)

@@ -21,20 +21,18 @@ class GalerieRepository extends ServiceEntityRepository
         parent::__construct($registry, Galerie::class);
     }
 
-//    /**
-//     * @return Galerie[] Returns an array of Galerie objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Galerie[] Returns an array of Galerie objects
+    */
+   public function lastTreeArts()
+   {
+       return $this->createQueryBuilder('g')
+           ->orderBy('g.id', 'DESC')
+           ->setMaxResults(3)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
 //    public function findOneBySomeField($value): ?Galerie
 //    {
