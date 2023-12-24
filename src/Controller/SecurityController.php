@@ -17,11 +17,18 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 class SecurityController extends AbstractController
 {
 
+    private EntityManagerInterface $em;
+
+    public function __construct(private $formLoginAuthenticator, EntityManagerInterface $em)
+    {  
+        $this->em = $em;
+    }
+
     #[Route('/signup', name: 'signup')]
     public function signup(Request $request,
     UserPasswordHasherInterface $passwordHasher,
     // UploaderPostPicture $uploaderPostPicture,
-    EntityManagerInterface $em
+    UserAuthenticatorInterface $userAuthenticator
     ): Response
     {     
         // Inscription d'un nouveaux utilisateur 
@@ -47,8 +54,11 @@ class SecurityController extends AbstractController
             $user->setPassword($hash);
 
             // Enregistrement dans la Base de Données
-            $em->persist($user); 
-            $em->flush();
+            $this->em->persist($user); 
+            $this->em->flush();
+
+             // Connexion de l'utilisateur aprés inscription
+             return $userAuthenticator->authenticateUser($user, $this->formLoginAuthenticator, $request);    
 
             
         }
@@ -60,21 +70,20 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+         // erreur dauthentification 
+         $error = $authenticationUtils->getLastAuthenticationError();
+         // récupère le nom entré par l'utilisateur lors de la derniére connxion
+         $username = $authenticationUtils->getLastUsername();
 
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security/login.html.twig', [
+            'username' => $username,
+             'error' => $error
+        ]);
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void
+    #[Route(path: '/logout', name: 'logout')]
+    public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        
     }
 }

@@ -14,7 +14,7 @@ function closeModal() {
 
 // Afficher le modal après 5 secondes
 document.addEventListener("DOMContentLoaded", function() {
-    setTimeout(showModalWithDelay, 5000);
+    setTimeout(showModalWithDelay, 6000);
 });
 
 // Fermer le modal en cliquant n'importe où sur la page

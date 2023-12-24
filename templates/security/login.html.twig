@@ -8,26 +8,23 @@
 </div>
 <div class="content-form">
     <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-    
-        {% if app.user %}
-            <div class="">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
-    
-        <label for="inputEmail">Email</label>
-        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="" autocomplete="email" required autofocus>
-        <label for="inputPassword">Mot de Passe</label>
-        <input type="password" name="password" id="inputPassword" class="" autocomplete="current-password" required>
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-    
-        <div class="button">
-            <button class="btn btn-primary" type="submit">Connexion</button>
+        <form action="{{ path('login') }}" method="post">
+            <label for="email">Email</label>
+            <input type="email" name="_username" id="email" value="{{username}}" autofocus>
+            <label for="password">Mot de passe </label>
+            <input type="password"  name="_password" id="password">
+            <input type="hidden" name="_csrf_token" value="{{csrf_token('authenticate')}}"> 
+            <button class="btn btn-primary">Se connecter</button>
+        </form>
+        <div class="remember-me">
+            <label for="remember_me">
+                <input type="checkbox" name="_remember_me" id="remember_me">
+                Se souvenier de moi
+            </label>
         </div>
-    </form>
+        {% if error %}
+            <div>{{error.messageKey}}</div>
+        {% endif %}
     <div class="image-form">
         <img src="{{asset ('build/images/joker.jpg')}}" alt="">
     </div>

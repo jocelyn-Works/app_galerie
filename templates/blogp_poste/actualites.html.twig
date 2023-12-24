@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BlogpPosteController!{% endblock %}
+
+{% block body %}
+<h2>Dernières actualités</h2>
+<div class="content-blogpost">
+{% for blogpost in blogposts %}
+<section class="blogpost">
+    
+    <div class="blog-article">
+        <h3>{{blogpost.titre}}</h3>
+        <div class="content-blog">
+            <p>{{blogpost.contenu|u.truncate(150, '...', false)}}</p>
+        </div>
+        <div class="blog-date">
+            <p>publié le {{blogpost.createdAt|date('d/m/y')}}</p>
+        </div>
+    </div>
+</section>
+{% endfor %}
+</div>
+    <div class="pagination">
+        {% do blogposts.setPageRange(2) %}
+        {{ knp_pagination_render(blogposts, 'includes/_paginations.html.twig') }}
+    </div>
+{% endblock %}

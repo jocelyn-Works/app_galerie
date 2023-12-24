@@ -24,7 +24,7 @@ class RéalisationsController extends AbstractController
         $request->query->getInt('page', 1),
         6
         );
-        return $this->render('realisations/index.html.twig', [
+        return $this->render('realisations/realisations.html.twig', [
             'galeries' => $galeries,
         ]);
     }
